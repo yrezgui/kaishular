@@ -21,7 +21,7 @@ module.exports = function ( grunt ) {
   /**
    * Load in our build configuration file.
    */
-  var userConfig = require( './build.config.js' );
+  var userConfig = require('./build.config.js');
 
   /**
    * This is the configuration object Grunt uses to give each plugin its
@@ -32,7 +32,7 @@ module.exports = function ( grunt ) {
      * We read in our `package.json` file so we can access the package name and
      * version. It's already there, so we don't repeat ourselves here.
      */
-    pkg: grunt.file.readJSON("package.json"),
+    pkg: grunt.file.readJSON('package.json'),
 
     /**
      * The banner is the comment that is placed at the top of our compiled
@@ -66,14 +66,14 @@ module.exports = function ( grunt ) {
     bump: {
       options: {
         files: [
-          "package.json",
-          "bower.json"
+          'package.json',
+          'bower.json'
         ],
         commit: false,
         commitMessage: 'chore(release): v%VERSION%',
         commitFiles: [
-          "package.json",
-          "client/bower.json"
+          'package.json',
+          'client/bower.json'
         ],
         createTag: false,
         tagName: 'v%VERSION%',
