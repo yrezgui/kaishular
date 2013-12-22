@@ -23,8 +23,7 @@ module.exports = {
     js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
     jsunit: [ 'src/**/*.spec.js' ],
 
-    atpl: [ 'src/app/**/*.tpl.html' ],
-    ctpl: [ 'src/common/**/*.tpl.html' ],
+    jade: [ 'src/**/*.jade'],
 
     html: [ 'src/index.html' ],
     less: 'src/less/main.less'

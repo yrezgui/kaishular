@@ -128,7 +128,6 @@ installed from NPM and configured as above:
 
 ```sh
 $ grunt clean
-$ grunt html2js
 $ grunt jshint
 $ grunt karma:continuous
 $ grunt concat

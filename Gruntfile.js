@@ -15,7 +15,6 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-recess');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
-  grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-contrib-jade');
 
   /**
@@ -177,8 +176,6 @@ module.exports = function ( grunt ) {
           '<%= vendor_files.js %>',
           'module.prefix',
           '<%= build_dir %>/src/**/*.js',
-          '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
           'module.suffix'
         ],
         dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
@@ -276,38 +273,11 @@ module.exports = function ( grunt ) {
       globals: {}
     },
 
-    /**
-     * HTML2JS is a Grunt plugin that takes all of your template files and
-     * places them into JavaScript files as strings that are added to
-     * AngularJS's template cache. This means that the templates too become
-     * part of the initial payload as one JavaScript file. Neat!
-     */
-    html2js: {
-      /**
-       * These are the templates from `src/app`.
-       */
-      app: {
-        options: {
-          base: 'src/app'
-        },
-        src: [ '<%= app_files.atpl %>' ],
-        dest: '<%= build_dir %>/templates-app.js'
-      },
-
-      /**
-       * These are the templates from `src/common`.
-       */
-      common: {
-        options: {
-          base: 'src/common'
-        },
-        src: [ '<%= app_files.ctpl %>' ],
-        dest: '<%= build_dir %>/templates-common.js'
-      }
-    },
-
     jade: {
       compile: {
+        options: {
+            pretty: true
+        },
         files: [
           {
             src: [ '<%= app_files.jade %>' ],
@@ -353,8 +323,6 @@ module.exports = function ( grunt ) {
         src: [
           '<%= vendor_files.js %>',
           '<%= build_dir %>/src/**/*.js',
-          '<%= html2js.common.dest %>',
-          '<%= html2js.app.dest %>',
           '<%= vendor_files.css %>',
           '<%= recess.build.dest %>'
         ]
@@ -384,8 +352,6 @@ module.exports = function ( grunt ) {
         dir: '<%= build_dir %>',
         src: [
           '<%= vendor_files.js %>',
-          '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
           '<%= test_files.js %>'
         ]
       }
@@ -461,7 +427,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= app_files.jade %>'
         ],
-        tasks: [ 'jade', 'html2js' ]
+        tasks: [ 'jade' ]
       },
 
       /**
