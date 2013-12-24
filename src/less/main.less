@@ -5,28 +5,12 @@
  */
 
 
-/**
- * First, we include the Twitter Bootstrap LESS files. Only the ones used in the
- * project should be imported as the rest are just wasting space.
+/*
+ * Import here all the vendor plugins CSS or LESS 
  */
 
-@import '../../vendor/bootstrap/less/mixins.less';
-@import '../../vendor/bootstrap/less/reset.less';
-@import '../../vendor/bootstrap/less/utilities.less';
-@import '../../vendor/bootstrap/less/scaffolding.less';
-@import '../../vendor/bootstrap/less/type.less';
-@import '../../vendor/bootstrap/less/grid.less';
-@import '../../vendor/bootstrap/less/layouts.less';
-@import '../../vendor/bootstrap/less/navs.less';
-@import '../../vendor/bootstrap/less/navbar.less';
-@import '../../vendor/bootstrap/less/buttons.less';
-@import '../../vendor/bootstrap/less/button-groups.less';
-@import '../../vendor/bootstrap/less/dropdowns.less';
-
-
 /**
- * This is our main variables file. It in turn imports the `variables` file from
- * Twitter Bootstrap. We must include it last so we can overwrite any variable
+ * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
  */
 
@@ -49,7 +33,6 @@ code, pre, .pre {
   margin: 10px 0;
   background-color: #EFEFEF;
   border: 1px solid #DADADA;
-  .border-radius(3px);
 }
 
 code {
@@ -97,7 +80,6 @@ h2 {
       a {
         font-weight: bold;
         text-align: center;
-        //border-left: 1px solid rgba(255, 255, 255, 0.75);
         border-right: 1px solid rgba(0, 0, 0, .1);
       }
       
@@ -137,13 +119,12 @@ h2 {
       margin-left: 20px;
 
       a, a:visited {
-        color: @grayLight;
+        color: #AAA8A8;
         text-decoration: none;
         font-size: 40px;
-        .transition( 250ms ease-in-out );
 
         &:hover {
-          color: @gray;
+          color: #808080;
         }
       }
     }
