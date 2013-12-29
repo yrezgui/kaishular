@@ -1,0 +1,17 @@
+{
+  "name": "kaishular",
+  "version": "0.0.1",
+  "authors": [
+    "Yacine Rezgui <rezgui.y@gmail.com>"
+  ],
+  "description": "An opinionated kickstarter for AngularJS projects.",
+  "keywords": [
+    "kaishular",
+    "angularjs",
+    "grunt",
+    "bower"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/yrezgui/kaishular",
+  "private": true
+}
