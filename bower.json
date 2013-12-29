@@ -13,5 +13,18 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/yrezgui/kaishular",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "lodash": "~2.4.1",
+    "angularjs": "*",
+    "angular-ui-router": "~0.2.7",
+    "restangular": "~1.2.2",
+    "angular-cookies": "~1.2.6",
+    "angular-animate": "~1.2.6",
+    "angular-sanitize": "~1.2.6"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.6"
+  }
 }
