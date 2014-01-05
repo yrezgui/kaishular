@@ -1,0 +1,26 @@
+{
+  "name": "kaishular",
+  "version": "0.0.1",
+  "description": "An opinionated kickstarter for AngularJS projects.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yrezgui/kaishular.git"
+  },
+  "private": true,
+  "keywords": [
+    "kaishular",
+    "angularjs",
+    "gulpjs",
+    "bower"
+  ],
+  "author": "Yacine Rezgui <rezgui.y@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yrezgui/kaishular/issues"
+  },
+  "homepage": "https://github.com/yrezgui/kaishular",
+  "devDependencies": {
+    "gulp": "~3.2.3"
+  }
+}
