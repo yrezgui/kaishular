@@ -20,16 +20,14 @@
     "url": "https://github.com/yrezgui/kaishular/issues"
   },
   "homepage": "https://github.com/yrezgui/kaishular",
-  "devDependencies": {
-    "gulp": "~3.2.3",
-    "gulp-livereload": "~0.1.1",
+  "dependencies": {
+    "gulp": "~3.2.5",
+    "gulp-livereload": "~0.2.0",
     "tiny-lr": "0.0.5",
+    "gulp-util": "~2.2.9",
     "gulp-concat": "~2.1.7",
-    "gulp-template": "~0.1.0",
-    "event-stream": "~3.0.20",
-    "gulp-less": "~1.1.1",
-    "gulp-coffee": "~1.2.5",
-    "gulp-jade": "~0.3.0",
-    "gulp-util": "~2.2.6"
+    "event-stream": "~3.1.0",
+    "gulp-less": "~1.1.7",
+    "gulp-jade": "~0.3.0"
   }
 }
