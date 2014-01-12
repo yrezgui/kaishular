@@ -1,6 +1,8 @@
 // Load packages
 var util      = require('util');
 var path      = require('path');
+var Q         = require('q');
+var lodash    = require('lodash');
 var gulp      = require('gulp');
 var gutil     = require('gulp-util');
 var concat    = require('gulp-concat');
@@ -13,105 +15,93 @@ var lr        = require('tiny-lr');
 var es        = require('event-stream');
 
 // Load configuration
-var config = require('./config.js');
+var settings = require('./config.js');
 
 // Start instances
 var server = lr();
 
-// List of source files
-var templateData = {
-  scripts: [],
-  styles: []
-};
 
+function compileScripts() {
+  return gulp.src(settings.source.files.js);
+}
 
-gulp.task('compile:scripts', function() {
-
+function compileStyles() {
   return es.concat(
-    gulp.src([path.join(config.source.path, 'scripts/**/*.js')]),
+    gulp.src(settings.source.files.css),
+    gulp.src(settings.source.files.less).pipe(less())
+  );
+}
 
-    gulp.src([path.join(config.source.path, 'scripts/**/*.coffee')])
-        .pipe(coffee({ bare: true }).on('error', gutil.log))
-
-  ).pipe(gulp.dest(path.join(config.dev.path, 'js')));
-});
-
-
-gulp.task('compile:styles', function() {
-
+function compileViews(config) {
   return es.concat(
-    gulp.src([path.join(config.source.path, 'styles/**/*.css')]),
+    gulp.src(settings.source.files.html),
+    gulp.src(settings.source.files.jade).pipe(jade({pretty: true, data: settings}))
+  );
+}
 
-    gulp.src([path.join(config.source.path, 'styles/**/*.less')])
-        .pipe(less())
+function getFiles(config) {
+  var directory = new RegExp('^' + path.join(__dirname, config.exclude), 'g');
+  var list = [];
 
-  ).pipe(gulp.dest(path.join(config.dev.path, 'css')));
-});
-
-
-gulp.task('compile:views', function() {
-
-  return es.concat(
-    gulp.src([path.join(config.source.path, 'views/**/*.html')]),
-
-    gulp.src([path.join(config.source.path, 'scripts/**/*.jade')])
-        .pipe(jade())
-
-  ).pipe(gulp.dest(path.join(config.dev.path, 'tpl')));
-});
-
-
-gulp.task('list:scripts', ['compile:scripts'], function (cb) {
-
-  var directory = new RegExp('^' + path.join(__dirname, config.dev.path), 'g');
-
-  gulp.src(path.join(config.dev.path, 'js/**/*.js'), {read: false})
-      .on('data', function (file) {
-        // Remove absolute path
-        templateData.scripts.push(file.path.replace(directory, ''));
-      })
-      .on('end', function () {
-        cb();
-      });
-});
-
-
-gulp.task('list:styles', ['compile:styles'], function (cb) {
-
-  var directory = new RegExp('^' + path.join(__dirname, config.dev.path), 'g');
-
-  gulp.src(path.join(config.dev.path, 'css/**/*.css'), {read: false})
-      .on('data', function (file) {
+  gulp.src(config.pattern, {read: false})
+    .on('data', function (file) {
       // Remove absolute path
-        console.log(file.path);
-        templateData.styles.push(file.path.replace(directory, ''));
-      })
-      .on('end', function () {
-        cb();
-      });
-});
+      list.push(file.path.replace(directory, ''));
+    })
+    .on('end', function () {
+      deferred.resolve(list);
+    });
+}
 
+function refreshFilesList() {
 
-gulp.task('index', ['list:styles', 'list:scripts'], function () {
+  var files = {
+    css: [],
+    js:  []
+  };
 
-  return gulp.src(path.join(config.source.path, 'index.html'))
-      .pipe(template(templateData))
-      .pipe(gulp.dest(config.dev.path));
-});
+  return Q.all(
+    getFiles({ pattern: settings.dev.files.css, exclude: settings.dev.path.root }),
+    getFiles({ pattern: settings.dev.files.js, exclude: settings.dev.path.root })
+  ).then(function (results) {
+    files.css = results[0];
+    files.js  = results[1];
 
+    settings.files = files;
 
-gulp.task('lr-server', function() {
-  server.listen(35729, function(err) {
-    if(err)
-      return console.log(err);
+    return gulp.src(path.join(settings.source.path.root, 'index.jade'))
+               .pipe(jade({pretty: true, data: settings}))
+               .pipe(gulp.dest(settings.dev.path.root));
   });
-});
+}
 
 
 gulp.task('default', function() {
-  gulp.run('lr-server', 'scripts');
+  compileScripts().pipe(gulp.dest(settings.dev.path.js));
+  compileStyles().pipe(gulp.dest(settings.dev.path.css));
 
-  gulp.watch('src/js/**', function(event) {
-    gulp.run('scripts');
+  gulp.watch(settings.source.files.js, function(event) {
+
+    var files = compileScripts()
+                .pipe(gulp.dest(settings.dev.path.js));
+
+    if(event.type !== 'changed') {
+      refreshFilesList();
+    }
+  });
+
+  gulp.watch([settings.source.files.css, settings.source.files.less], function(event) {
+    
+    var files = compileStyles()
+                .pipe(gulp.dest(settings.dev.path.css));
+
+    if(event.type !== 'changed') {
+      refreshFilesList();
+    }
+  });
+
+  gulp.watch([settings.source.files.html, settings.source.files.jade], function(event) {
+    
+    compileViews().pipe(gulp.dest(settings.dev.path.tpl));
   });
 });
