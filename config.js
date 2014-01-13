@@ -14,9 +14,9 @@ exports.source = {
   }
 };
 
-exports.dev.path.scripts  = path.join(exports.source.path.root, 'scripts');
-exports.dev.path.styles   = path.join(exports.source.path.root, 'styles');
-exports.dev.path.views    = path.join(exports.source.path.root, 'views');
+exports.source.path.scripts  = path.join(exports.source.path.root, 'scripts');
+exports.source.path.styles   = path.join(exports.source.path.root, 'styles');
+exports.source.path.views    = path.join(exports.source.path.root, 'views');
 
 exports.source.files = {
   js:   path.join(exports.source.path.scripts, '**/*.js'),
