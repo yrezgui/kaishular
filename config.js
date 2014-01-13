@@ -39,10 +39,10 @@ exports.dev.path.js   = path.join(exports.dev.path.root, 'js');
 exports.dev.path.css  = path.join(exports.dev.path.root, 'css');
 exports.dev.path.tpl  = path.join(exports.dev.path.root, 'tpl');
 
-exports.source.files = {
-  js:   path.join(exports.source.path.js, '**/*.js'),
-  css: path.join(exports.source.path.css, '**/*.css'),
-  tpl:  path.join(exports.source.path.html, '**/*.html')
+exports.dev.files = {
+  js:   path.join(exports.dev.path.js, '**/*.js'),
+  css: path.join(exports.dev.path.css, '**/*.css'),
+  tpl:  path.join(exports.dev.path.tpl, '**/*.html')
 };
 
 /*
