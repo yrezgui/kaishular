@@ -1,23 +1,14 @@
 // Load packages
-var util      = require('util');
 var path      = require('path');
 var Q         = require('q');
 var lodash    = require('lodash');
 var gulp      = require('gulp');
-var gutil     = require('gulp-util');
-var concat    = require('gulp-concat');
-var refresh   = require('gulp-livereload');
 var less      = require('gulp-less');
 var jade      = require('gulp-jade');
-var lr        = require('tiny-lr');
 var es        = require('event-stream');
 
 // Load configuration
 var settings = require('./config.js');
-
-// Start instances
-var server = lr();
-
 
 function compileScripts() {
   return gulp.src(settings.source.files.js);
@@ -30,7 +21,7 @@ function compileStyles() {
   );
 }
 
-function compileViews(config) {
+function compileViews() {
   return es.concat(
     gulp.src(settings.source.files.html),
     gulp.src(settings.source.files.jade).pipe(jade({pretty: true, data: settings.dev}))
@@ -87,7 +78,7 @@ gulp.task('gulpfile.js', function() {
 
   gulp.watch(settings.source.files.js, function(event) {
 
-    var files = compileScripts().pipe(gulp.dest(settings.dev.path.js));
+    compileScripts().pipe(gulp.dest(settings.dev.path.js));
 
     if(event.type !== 'changed') {
       refreshFilesList();
@@ -96,14 +87,14 @@ gulp.task('gulpfile.js', function() {
 
   gulp.watch([settings.source.files.css, settings.source.files.less], function(event) {
     
-    var files = compileStyles().pipe(gulp.dest(settings.dev.path.css));
+    compileStyles().pipe(gulp.dest(settings.dev.path.css));
 
     if(event.type !== 'changed') {
       refreshFilesList();
     }
   });
 
-  gulp.watch([settings.source.files.html, settings.source.files.jade], function(event) {
+  gulp.watch([settings.source.files.html, settings.source.files.jade], function() {
     
     compileViews().pipe(gulp.dest(settings.dev.path.tpl));
   });
