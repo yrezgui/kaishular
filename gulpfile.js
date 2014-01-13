@@ -62,15 +62,15 @@ function refreshFilesList() {
     js:  []
   };
 
-  return Q.all(
+  return Q.all([
     getFiles({ pattern: settings.dev.files.css, exclude: settings.dev.path.root }),
     getFiles({ pattern: settings.dev.files.js, exclude: settings.dev.path.root })
-  ).then(function (results) {
+  ]).then(function (results) {
     files.css = results[0];
     files.js  = results[1];
 
-    settings.dev.files = files;
-    
+    settings.dev.filesList = files;
+
     return gulp.src(path.join(settings.source.path.root, 'index.jade'))
                .pipe(jade({pretty: true, data: settings.dev}))
                .pipe(gulp.dest(settings.dev.path.root));
@@ -79,14 +79,15 @@ function refreshFilesList() {
 
 
 gulp.task('gulpfile.js', function() {
-  compileScripts().pipe(gulp.dest(settings.dev.path.js));
-  compileStyles().pipe(gulp.dest(settings.dev.path.css));
-  refreshFilesList();
+  Q.all(
+    compileScripts().pipe(gulp.dest(settings.dev.path.js)),
+    compileStyles().pipe(gulp.dest(settings.dev.path.css))
+
+  ).then(refreshFilesList);
 
   gulp.watch(settings.source.files.js, function(event) {
 
-    var files = compileScripts()
-                .pipe(gulp.dest(settings.dev.path.js));
+    var files = compileScripts().pipe(gulp.dest(settings.dev.path.js));
 
     if(event.type !== 'changed') {
       refreshFilesList();
@@ -95,8 +96,7 @@ gulp.task('gulpfile.js', function() {
 
   gulp.watch([settings.source.files.css, settings.source.files.less], function(event) {
     
-    var files = compileStyles()
-                .pipe(gulp.dest(settings.dev.path.css));
+    var files = compileStyles().pipe(gulp.dest(settings.dev.path.css));
 
     if(event.type !== 'changed') {
       refreshFilesList();
