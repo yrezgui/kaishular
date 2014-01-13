@@ -30,6 +30,14 @@ exports.source.files = {
  * Development
  */
 exports.dev = {
+  title: 'Kaishular',
+  description: 'The perfect toolkit for AngularJS developers.',
+
+  googleAnalytics: {
+    id:     'UA-31448413-6',
+    domain: 'yrezgui.com'
+  },
+
   path: {
     root: 'lib'
   }
