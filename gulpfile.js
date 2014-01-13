@@ -7,8 +7,6 @@ var gulp      = require('gulp');
 var gutil     = require('gulp-util');
 var concat    = require('gulp-concat');
 var refresh   = require('gulp-livereload');
-var template  = require('gulp-template');
-var coffee    = require('gulp-coffee');
 var less      = require('gulp-less');
 var jade      = require('gulp-jade');
 var lr        = require('tiny-lr');
@@ -35,13 +33,15 @@ function compileStyles() {
 function compileViews(config) {
   return es.concat(
     gulp.src(settings.source.files.html),
-    gulp.src(settings.source.files.jade).pipe(jade({pretty: true, data: settings}))
+    gulp.src(settings.source.files.jade).pipe(jade({pretty: true, data: settings.dev}))
   );
 }
 
 function getFiles(config) {
   var directory = new RegExp('^' + path.join(__dirname, config.exclude), 'g');
   var list = [];
+
+  var deferred = Q.defer();
 
   gulp.src(config.pattern, {read: false})
     .on('data', function (file) {
@@ -51,6 +51,8 @@ function getFiles(config) {
     .on('end', function () {
       deferred.resolve(list);
     });
+
+  return deferred.promise;
 }
 
 function refreshFilesList() {
@@ -67,18 +69,19 @@ function refreshFilesList() {
     files.css = results[0];
     files.js  = results[1];
 
-    settings.files = files;
-
+    settings.dev.files = files;
+    
     return gulp.src(path.join(settings.source.path.root, 'index.jade'))
-               .pipe(jade({pretty: true, data: settings}))
+               .pipe(jade({pretty: true, data: settings.dev}))
                .pipe(gulp.dest(settings.dev.path.root));
   });
 }
 
 
-gulp.task('default', function() {
+gulp.task('gulpfile.js', function() {
   compileScripts().pipe(gulp.dest(settings.dev.path.js));
   compileStyles().pipe(gulp.dest(settings.dev.path.css));
+  refreshFilesList();
 
   gulp.watch(settings.source.files.js, function(event) {
 
