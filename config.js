@@ -53,4 +53,4 @@ exports.prod = {
 };
 
 
-exports = module.exports;
+module.exports = exports;
