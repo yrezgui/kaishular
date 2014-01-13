@@ -6,6 +6,11 @@ html
     title= title
     meta(name="description", content=description)
     meta(name="viewport", content="width=device-width, initial-scale=1")
+  each file in filesList.css
+    link(rel="stylesheet" href=file)
+
+  each file in filesList.js
+    script(src=file)
   body
     
     script.
